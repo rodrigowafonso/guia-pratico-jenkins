@@ -23,7 +23,7 @@ pipeline {
         }
 
         stage('Deploy Docker Image') {
-            envirionment {
+            environment {
                 tag_version = "v.${env.BUILD_ID}"
             }
             steps {
