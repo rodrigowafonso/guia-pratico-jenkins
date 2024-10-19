@@ -23,8 +23,13 @@ pipeline {
         }
 
         stage('Deploy Docker Image') {
+            envirionment {
+                tag_version = "v.${env.BUILD_ID}"
+            }
             steps {
-                sh 'echo "Executando o comando Kubectl Apply"'
+                withKubeConfig([credentionsID: 'kubeconfig'])
+                sh 'sed -i "s/{{tag}}/$tag_version/g" ./k8s/deployment.yaml'
+                sh 'kubectl apply -f ./k8s/deployment.yaml'
             }
         }
     }
